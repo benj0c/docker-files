@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:12.16.1-alpine
 
 RUN apk -v --update add \
         bash \
@@ -24,3 +24,4 @@ RUN apk --no-cache upgrade && apk add --no-cache \
 
 ENV CHROME_BIN /usr/bin/chromium-browser
 ENV LIGHTHOUSE_CHROMIUM_PATH /usr/bin/chromium-browser
+ENV NODE_OPTIONS --max-old-space-size=8192
