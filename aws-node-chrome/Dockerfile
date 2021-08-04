@@ -22,6 +22,8 @@ RUN apk --no-cache upgrade && apk add --no-cache \
     ttf-freefont \
     chromium
 
+RUN curl -sL https://sentry.io/get-cli/ | bash
+
 ENV CHROME_BIN /usr/bin/chromium-browser
 ENV LIGHTHOUSE_CHROMIUM_PATH /usr/bin/chromium-browser
 ENV NODE_OPTIONS --max-old-space-size=8192
