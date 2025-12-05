@@ -1,29 +1,29 @@
-FROM node:14.17.6-alpine
+FROM node:22-slim
 
-RUN apk -v --update add \
-        bash \
-        git \
-        openssh \
-        curl \
-        python \
-        py-pip \
-        groff \
-        less \
-        mailcap \
-        && \
-    pip install --upgrade pip && \
-    pip install --upgrade awscli==1.14.5 s3cmd==2.0.1 python-magic && \
-    npm i npm@7 -g && \
-    apk -v --purge del py-pip && \
-    rm /var/cache/apk/*
-
-RUN apk --no-cache upgrade && apk add --no-cache \
+# Install only essential dependencies for node-gyp + Chromium
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-setuptools \
+    make \
+    g++ \
+    git \
+    openssh-client \
+    curl \
+    awscli \
+    groff-base \
+    less \
+    mailcap \
     udev \
-    ttf-freefont \
-    chromium
+    fonts-freefont-ttf \
+    chromium \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Install Sentry CLI
 RUN curl -sL https://sentry.io/get-cli/ | bash
 
-ENV CHROME_BIN /usr/bin/chromium-browser
-ENV LIGHTHOUSE_CHROMIUM_PATH /usr/bin/chromium-browser
-ENV NODE_OPTIONS --max-old-space-size=8192
+# Environment variables for Chromium & Node
+ENV CHROME_BIN=/usr/bin/chromium
+ENV LIGHTHOUSE_CHROMIUM_PATH=/usr/bin/chromium
+ENV NODE_OPTIONS=--max-old-space-size=8192
+ENV PYTHON=/usr/bin/python3
