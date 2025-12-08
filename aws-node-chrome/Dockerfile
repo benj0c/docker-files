@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     udev \
     fonts-freefont-ttf \
     chromium \
+    ca-certificates \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
