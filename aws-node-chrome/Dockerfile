@@ -19,7 +19,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Sentry CLI
-RUN curl -sL https://sentry.io/get-cli/ | bash
+ARG SENTRY_CLI_VERSION=2.58.2
+RUN curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="${SENTRY_CLI_VERSION}" bash \
+    && sentry-cli --version
 
 # Environment variables for Chromium & Node
 ENV CHROME_BIN=/usr/bin/chromium
