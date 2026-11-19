@@ -7,10 +7,14 @@ RUN apk -v --update add \
         curl \
         python3 \
         py-pip \
+        py3-setuptools \
         py3-six \
         groff \
         less \
         mailcap \
+        make \
+        g++ \
+        gcc \
         && \
     pip install --upgrade pip && \
     pip install --upgrade awscli==1.29.66 s3cmd==2.4.0 python-magic && \
@@ -23,8 +27,10 @@ RUN apk --no-cache upgrade && apk add --no-cache \
     ttf-freefont \
     chromium
 
-RUN curl -sL https://sentry.io/get-cli/ | bash
+ARG SENTRY_CLI_VERSION=2.58.2
+RUN curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="${SENTRY_CLI_VERSION}" bash \
+    && sentry-cli --version
 
-ENV CHROME_BIN /usr/bin/chromium-browser
-ENV LIGHTHOUSE_CHROMIUM_PATH /usr/bin/chromium-browser
-ENV NODE_OPTIONS --max-old-space-size=8192
+ENV CHROME_BIN="/usr/bin/chromium-browser"
+ENV LIGHTHOUSE_CHROMIUM_PATH="/usr/bin/chromium-browser"
+ENV NODE_OPTIONS="--max-old-space-size=8192"
